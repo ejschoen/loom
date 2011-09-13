@@ -5,9 +5,7 @@
         [loom.alg :only [distinct-edges loners]]
         [loom.attr :only [attr? attr attrs]]
         [clojure.string :only [escape]]
-        [clojure.java [io :only [file]] [shell :only [sh]]])
-  (:import [org.apache.xmlrpc.client XmlRpcClient XmlRpcClientConfigImpl]
-           [org.apache.xmlrpc XmlRpcException]))
+        [clojure.java [io :only [file]] [shell :only [sh]]]))
 
 (defn- dot-esc
   [s]
@@ -54,17 +52,15 @@
         (.append "  graph ")
         (.append (dot-attrs (:graph opts)))))
     (doseq [[n1 n2] (distinct-edges g)]
-      (let [n1l (str (or (node-label n1) n1))
-            n2l (str (or (node-label n2) n2))
-            el (if w? (weight g n1 n2) (edge-label n1 n2))
+      (let [el (if w? (weight g n1 n2) (edge-label n1 n2))
             eattrs (assoc (if (attr? g)
                             (attrs g n1 n2) {})
                      :label el)]
         (doto sb
           (.append "  \"")
-          (.append (dot-esc n1l))
+          (.append (dot-esc (str n1)))
           (.append (if d? "\" -> \"" "\" -- \""))
-          (.append (dot-esc n2l))
+          (.append (dot-esc (str n2)))
           (.append \"))
         (when (or (:label eattrs) (< 1 (count eattrs)))
           (.append sb \space)
@@ -73,7 +69,7 @@
     (doseq [n (nodes g)]
       (doto sb
         (.append "  \"")
-        (.append (dot-esc (str (or (node-label n) n))))
+        (.append (dot-esc (str n)))
         (.append \"))
       (when-let [nattrs (when (attr? g)
                           (dot-attrs (attrs g n)))]

@@ -51,6 +51,10 @@
       (doto sb
         (.append "  graph ")
         (.append (dot-attrs (:graph opts)))))
+    (when (:node opts)
+      (doto sb
+        (.append "  node ")
+        (.append (dot-attrs (:node opts)))))
     (doseq [[n1 n2] (distinct-edges g)]
       (let [el (if w? (weight g n1 n2) (edge-label n1 n2))
             eattrs (assoc (if (attr? g)

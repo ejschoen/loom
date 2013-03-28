@@ -6,10 +6,6 @@ That said, feedback welcome. Email: [jkkramer@gmail.com](mailto:jkkramer@gmail.c
 
 ## Usage
 
-### Leiningen/Clojars [group-id/name version]
-
-    [jkkramer/loom "0.1.0"]
-
 ### Namespaces
 
     loom.graph - records & constructors
